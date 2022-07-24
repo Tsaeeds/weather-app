@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const hbs = require('hbs')
+const forcast = require('./utils/weatherForecast')
 
 const viewsPath = path.join(__dirname, '../templates/views')
 const partialsPath = path.join(__dirname, '../templates/partials')
@@ -35,6 +36,31 @@ app.get('/about', (req, res)=>{
         title: 'About'
     })
 })
+
+
+app.get('/weather', (req, res)=>{
+
+    if(!req.query.location){
+        console.log('please provide valid input for location')
+    }
+
+    forcast(req.query.location, (error, {temperature = 0,feelslike = 0} = {})=>{
+
+        if(error){
+            res.send({
+                error
+            })
+        }
+
+        res.send({
+            forecast: temperature,
+            location: req.query.location
+        })
+    })
+   
+})
+
+
 
 app.get('*', (req, res)=>{
 
