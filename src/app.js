@@ -47,7 +47,7 @@ app.get('/weather', (req, res)=>{
     forcast(req.query.location, (error, {temperature = 0,feelslike = 0} = {})=>{
 
         if(error){
-            res.send({
+            return res.send({
                 error
             })
         }
